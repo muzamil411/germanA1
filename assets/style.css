@@ -1,0 +1,178 @@
+/* ============================================================
+   German A1 — Complete Guide (Roman Urdu)
+   Print stylesheet — A4, colorful, kid-friendly
+   ============================================================ */
+
+@page { size: A4; margin: 0; }
+
+:root{
+  --der:#1f6feb;        /* maskuline  */
+  --die:#e5397a;        /* feminine   */
+  --das:#12a150;        /* neuter     */
+  --ink:#1c2333;
+  --muted:#5a6478;
+  --line:#e3e8f2;
+  --paper:#ffffff;
+  --tip:#fff8e1;   --tip-b:#f6c343;
+  --warn:#ffeceb;  --warn-b:#f2635c;
+  --test:#eef3ff;  --test-b:#5b8def;
+  --talk:#eafaf1;  --talk-b:#2fbf71;
+  --vocab:#f6f2ff; --vocab-b:#8b5cf6;
+}
+
+*{ box-sizing:border-box; }
+
+/* Colour emoji must win over DejaVu's monochrome symbol glyphs, so this
+   family is declared first in every stack and limited to emoji ranges. */
+@font-face{
+  font-family:"EmojiFirst";
+  src:local("Noto Color Emoji");
+  unicode-range:U+203C,U+2049,U+2122,U+2139,U+2190-21FF,U+2300-23FF,
+    U+25AA-25FE,U+2600-27BF,U+2934,U+2935,U+2B00-2BFF,U+3030,U+303D,
+    U+3297,U+3299,U+FE0F,U+20E3,U+1F000-1FAFF;
+}
+
+html,body{
+  margin:0; padding:0;
+  background:#fff;
+  color:var(--ink);
+  font-family:"EmojiFirst","DejaVu Sans","FreeSans",sans-serif;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* ---------- Page frame ---------- */
+.page{
+  position:relative;
+  width:210mm; height:297mm;
+  padding:14mm 15mm 16mm 15mm;
+  page-break-after:always;
+  break-after:page;
+  overflow:hidden;
+}
+.page:last-child{ page-break-after:auto; }
+
+/* Content area of a page: everything above the footer. Used to detect overflow. */
+.pg-body{ height:100%; }
+.page:not(.cover) .pg-body{ height:calc(297mm - 14mm - 16mm); }
+
+.pg-foot{
+  position:absolute; left:15mm; right:15mm; bottom:7mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:8.5pt; color:var(--muted);
+  border-top:1.5px solid var(--line); padding-top:2.5mm;
+}
+.pg-foot .num{
+  background:var(--der); color:#fff; font-weight:bold;
+  border-radius:999px; padding:1mm 3mm; font-size:8.5pt;
+}
+
+/* ---------- Typography ---------- */
+h1,h2,h3,h4{ margin:0 0 3mm 0; line-height:1.25; }
+h1{ font-size:26pt; }
+h2{ font-size:17pt; }
+h3{ font-size:13pt; }
+p{ margin:0 0 2.5mm 0; font-size:10.5pt; line-height:1.55; }
+ul,ol{ margin:0 0 2.5mm 0; padding-left:6mm; font-size:10.5pt; line-height:1.6; }
+li{ margin-bottom:1mm; }
+b,strong{ color:#0f1830; }
+.de{ font-weight:bold; color:var(--der); }
+.small{ font-size:9pt; }
+.muted{ color:var(--muted); }
+.center{ text-align:center; }
+
+/* ---------- Chapter header banner ---------- */
+.ch-head{
+  background:linear-gradient(100deg,#1f6feb,#8b5cf6);
+  color:#fff; border-radius:6mm; padding:6mm 7mm; margin-bottom:6mm;
+}
+.ch-head .kap{ font-size:9.5pt; letter-spacing:.18em; opacity:.9; text-transform:uppercase; }
+.ch-head h2{ margin:1mm 0 1.5mm 0; font-size:21pt; }
+.ch-head p{ margin:0; font-size:10pt; opacity:.95; }
+
+.sec-title{
+  display:flex; align-items:center; gap:2.5mm;
+  font-size:14pt; font-weight:bold; margin:5mm 0 3mm 0;
+  padding-bottom:2mm; border-bottom:3px solid var(--der);
+}
+.sec-title.pink{ border-color:var(--die); }
+.sec-title.green{ border-color:var(--das); }
+
+/* ---------- Boxes ---------- */
+.box{ border-radius:4mm; padding:4mm 5mm; margin:3mm 0; font-size:10pt; line-height:1.55; }
+.box .bt{ font-weight:bold; font-size:11pt; margin-bottom:1.5mm; display:block; }
+.box p:last-child, .box ul:last-child{ margin-bottom:0; }
+.box.compact{ padding:3mm 3.5mm; font-size:9pt; margin:2mm 0; }
+.box.compact .bt{ font-size:10pt; margin-bottom:1mm; }
+.tip  { background:var(--tip);   border-left:5px solid var(--tip-b); }
+.warn { background:var(--warn);  border-left:5px solid var(--warn-b); }
+.test { background:var(--test);  border-left:5px solid var(--test-b); }
+.talk { background:var(--talk);  border-left:5px solid var(--talk-b); }
+.vocab{ background:var(--vocab); border-left:5px solid var(--vocab-b); }
+
+/* ---------- Tables ---------- */
+table{ width:100%; border-collapse:collapse; margin:3mm 0; font-size:9.5pt; }
+th{ background:var(--der); color:#fff; text-align:left; padding:2.2mm 3mm; font-size:9.5pt; }
+td{ padding:2mm 3mm; border-bottom:1px solid var(--line); vertical-align:top; }
+tr:nth-child(even) td{ background:#f7f9fd; }
+table.pink th{ background:var(--die); }
+table.green th{ background:var(--das); }
+table.purple th{ background:#8b5cf6; }
+.pron{ color:var(--die); font-style:italic; }
+.mean{ color:var(--muted); }
+
+/* gender colour chips */
+.g{ font-weight:bold; }
+.g-der{ color:var(--der); } .g-die{ color:var(--die); } .g-das{ color:var(--das); }
+
+/* ---------- Example line ---------- */
+.ex{ border-left:4px solid var(--line); padding:1.5mm 0 1.5mm 4mm; margin:2mm 0; }
+.ex .g1{ font-weight:bold; font-size:10.5pt; }
+.ex .p1{ color:var(--die); font-style:italic; font-size:9.5pt; }
+.ex .u1{ color:var(--muted); font-size:9.5pt; }
+
+/* ---------- Cover ---------- */
+.cover{
+  background:linear-gradient(160deg,#0b1d51 0%,#1f6feb 55%,#8b5cf6 100%);
+  color:#fff; display:flex; flex-direction:column;
+  justify-content:center; align-items:center; text-align:center;
+  padding:20mm;
+}
+.cover .flag{
+  width:46mm; height:28mm; margin:0 auto 6mm auto;
+  border-radius:2.5mm; overflow:hidden;
+  border:2px solid rgba(255,255,255,.6);
+  box-shadow:0 4mm 10mm rgba(0,0,0,.25);
+}
+.cover .flag i{ display:block; height:33.34%; }
+.cover .flag .b{ background:#000; }
+.cover .flag .r{ background:#dd0000; }
+.cover .flag .y{ background:#ffce00; }
+.cover h1{ font-size:40pt; margin:0 0 3mm 0; letter-spacing:-1px; }
+.cover .sub{ font-size:16pt; opacity:.95; margin-bottom:8mm; }
+.cover .pill{
+  background:rgba(255,255,255,.16); border:2px solid rgba(255,255,255,.45);
+  border-radius:999px; padding:3mm 8mm; font-size:12pt; margin:2mm;
+}
+.cover .rowpills{ display:flex; flex-wrap:wrap; justify-content:center; }
+.cover .foot{ position:absolute; bottom:22mm; left:0; right:0; font-size:11pt; opacity:.9; }
+.cover .stickers{ font-size:24pt; letter-spacing:4mm; margin-top:10mm; }
+
+/* ---------- TOC ---------- */
+.toc-row{ display:flex; align-items:baseline; gap:2mm; font-size:10.5pt; margin-bottom:2.6mm; }
+.toc-row .t{ white-space:nowrap; }
+.toc-row .dots{ flex:1; border-bottom:1.5px dotted #c3ccdd; transform:translateY(-1mm); }
+.toc-row .p{ font-weight:bold; color:var(--der); }
+.toc-part{ font-weight:bold; font-size:11.5pt; margin:4mm 0 2mm 0; color:#0f1830; }
+
+/* ---------- misc ---------- */
+.two{ display:flex; gap:4mm; }
+.two > *{ flex:1; }
+.card{ border:2px solid var(--line); border-radius:4mm; padding:3.5mm 4mm; font-size:9.5pt; }
+.card .ct{ font-weight:bold; margin-bottom:1.5mm; font-size:10.5pt; }
+/* two-column numbered exercise grid */
+.qgrid{ display:grid; grid-template-columns:1fr 1fr; gap:1.5mm 6mm; counter-reset:q; margin-top:2mm; }
+.qgrid > div{ font-size:9.5pt; }
+.qgrid > div::before{ counter-increment:q; content:counter(q) ". "; font-weight:bold; color:var(--muted); }
+.qgrid.one{ grid-template-columns:1fr; }
+.blank{ display:inline-block; min-width:22mm; border-bottom:1.5px solid #9aa6bd; }
