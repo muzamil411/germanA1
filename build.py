@@ -8,6 +8,9 @@ Content files live in content/ and are split into pages by markers:
 Optional marker attributes:
     cls="cover"      extra CSS class on the page div
     nofoot="1"       hide the page footer (cover pages)
+    part="..."       start a new chapter group in the table of contents
+    toc="..."        add a table-of-contents row pointing at this page
+    tocpage="1"      this page is filled with the generated table of contents
 """
 import glob
 import html
@@ -58,6 +61,60 @@ def collect_pages():
     return pages
 
 
+def build_toc(pages):
+    """Collect the table of contents entries in page order."""
+    entries = []
+    for n, (attrs, _) in enumerate(pages, start=1):
+        if attrs.get("part"):
+            entries.append(("part", attrs["part"], n))
+        if attrs.get("toc"):
+            entries.append(("row", attrs["toc"], n))
+    return entries
+
+
+def render_toc_pages(entries, slots):
+    """Split the entries over the available table-of-contents pages."""
+    if not slots:
+        return []
+    # A part heading takes noticeably more vertical space than a row.
+    weights = [1.7 if kind == "part" else 1.0 for kind, _, _ in entries]
+    per_page = sum(weights) / slots
+    chunks, cur, used = [], [], 0.0
+    for entry, w in zip(entries, weights):
+        if used + w > per_page and len(chunks) < slots - 1 and cur:
+            chunks.append(cur)
+            cur, used = [], 0.0
+        cur.append(entry)
+        used += w
+    chunks.append(cur)
+    while len(chunks) < slots:
+        chunks.append([])
+
+    out = []
+    for i, chunk in enumerate(chunks):
+        buf = []
+        if i == 0:
+            buf.append(
+                '<div class="ch-head"><div class="kap">Table of Contents</div>'
+                "<h2>\U0001F4D1 Fehrist</h2>"
+                "<p>Poori kitab aik nazar mein &mdash; 100 safhaat, 12 chapters.</p></div>"
+            )
+        else:
+            buf.append('<div class="sec-title">\U0001F4D1 Fehrist '
+                       '<span class="muted small">(jari hai &middot; continued)</span></div>')
+        for kind, text, num in chunk:
+            if kind == "part":
+                buf.append(f'<div class="toc-part">{text}</div>')
+            else:
+                buf.append(
+                    '<div class="toc-row">'
+                    f'<span class="t">{text}</span><span class="dots"></span>'
+                    f'<span class="p">{num}</span></div>'
+                )
+        out.append("\n".join(buf))
+    return out
+
+
 def render(pages):
     css = open(os.path.join(ROOT, "assets", "style.css"), encoding="utf-8").read()
     out = [
@@ -66,7 +123,14 @@ def render(pages):
         "<title>German A1 — Complete Guide (Roman Urdu)</title>",
         f"<style>\n{css}\n</style></head><body>",
     ]
+    toc_bodies = render_toc_pages(
+        build_toc(pages), sum(1 for a, _ in pages if a.get("tocpage") == "1")
+    )
+    toc_iter = iter(toc_bodies)
+
     for n, (attrs, body) in enumerate(pages, start=1):
+        if attrs.get("tocpage") == "1":
+            body = next(toc_iter, "")
         cls = "page " + attrs.get("cls", "")
         out.append(f'<div class="{cls.strip()}" id="p{n}">')
         out.append('<div class="pg-body">')
