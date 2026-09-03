@@ -167,11 +167,23 @@ table.purple th{ background:#8b5cf6; }
 .cover .stickers{ font-size:24pt; letter-spacing:4mm; margin-top:10mm; }
 
 /* ---------- TOC ---------- */
-.toc-row{ display:flex; align-items:baseline; gap:2mm; font-size:10.5pt; margin-bottom:2.6mm; }
+.toc-row{ display:flex; align-items:baseline; gap:2mm; font-size:10pt; margin-bottom:1.9mm; }
 .toc-row .t{ white-space:nowrap; }
 .toc-row .dots{ flex:1; border-bottom:1.5px dotted #c3ccdd; transform:translateY(-1mm); }
 .toc-row .p{ font-weight:bold; color:var(--der); }
-.toc-part{ font-weight:bold; font-size:11.5pt; margin:4mm 0 2mm 0; color:#0f1830; }
+.toc-part{ font-weight:bold; font-size:11pt; margin:3mm 0 1.6mm 0; color:#0f1830; }
+
+/* dense word sheet + answer key */
+.wl{ column-count:3; column-gap:5mm; font-size:8.2pt; line-height:1.45; }
+.wl div{ break-inside:avoid; margin-bottom:.6mm; }
+.wl b{ color:#12203c; }
+.wl .u{ color:var(--muted); }
+.wl.two-col{ column-count:2; font-size:8.6pt; }
+.ans{ column-count:2; column-gap:6mm; font-size:8.6pt; line-height:1.5; }
+.ans .a{ break-inside:avoid; margin-bottom:1.6mm; }
+.ans .a b{ color:var(--der); }
+.wl-head{ font-weight:bold; font-size:9.5pt; margin:1.5mm 0 1mm 0; color:#0f1830;
+  border-bottom:1.5px solid var(--line); break-after:avoid; }
 
 /* ---------- misc ---------- */
 .two{ display:flex; gap:4mm; }

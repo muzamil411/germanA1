@@ -78,8 +78,10 @@ def render_toc_pages(entries, slots):
         return []
     # A part heading takes noticeably more vertical space than a row.
     weights = [1.7 if kind == "part" else 1.0 for kind, _, _ in entries]
-    per_page = sum(weights) / slots
-    chunks, cur, used = [], [], 0.0
+    # The first page also carries the chapter banner, so it fits fewer rows.
+    HEADER = 3.0
+    per_page = (sum(weights) + HEADER) / slots
+    chunks, cur, used = [], [], HEADER
     for entry, w in zip(entries, weights):
         if used + w > per_page and len(chunks) < slots - 1 and cur:
             chunks.append(cur)
